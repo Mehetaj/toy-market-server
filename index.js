@@ -35,9 +35,7 @@ async function run() {
     // console.log(imgCollection);
 
 
-    app.get('/imgs' , async(req ,res) => {
-        // const result = await imgCollection.find().toArray();
-        // res.send(result)
+    app.get('/imgs' , (req ,res) => {
         res.send(imgs)
     })
 

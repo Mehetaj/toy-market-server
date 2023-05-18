@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://toyMarketplace:axUVTCNxShzeYpzO@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -34,13 +34,34 @@ async function run() {
     // const imgCollection = client.db('imgColllection').collection('img')
     // console.log(imgCollection);
 
+    const toysCollection = client.db("toysCollection").collection("toys")
+    // console.log(toysCollection);
 
     app.get('/imgs' , (req ,res) => {
         res.send(imgs)
     })
 
 
+    app.post('/sportstoy', async(req, res) => {
+      const toys = req.body;
+      const result = await toysCollection.insertOne(data)
+      res.send(result)
+    })
 
+    app.get('/sportstoys',async(req, res) => {
+      const q = req.body;
+      const toys = toysCollection.find();
+      const result = await toys.toArray();
+      res.send(result)
+    })
+
+    app.get('/sportstoy/:id',async(req, res) =>{
+      const id =  req.params.id;
+      console.log(id);
+      const queury = {_id: new ObjectId(id)}
+      const result  = await toysCollection.findOne(queury)
+      res.send(result)
+    })
 
 
 

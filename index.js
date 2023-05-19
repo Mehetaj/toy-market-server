@@ -15,7 +15,6 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://toyMarketplace:axUVTCNxShzeYpzO@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
 
-const imgs = require('./img.json')
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -34,11 +33,16 @@ async function run() {
     // const imgCollection = client.db('imgColllection').collection('img')
     // console.log(imgCollection);
 
-    const toysCollection = client.db("toysCollection").collection("toys")
+
+    const ingCollection = client.db("Images").collection("Image");
+    const tabsCollection= client.db("tabsCollection").collection("tabs");
+    const toysCollection = client.db("toysCollection").collection("toys");
     // console.log(toysCollection);
 
-    app.get('/imgs', (req, res) => {
-      res.send(imgs)
+    app.get('/imgs', async(req, res) => {
+      const imgs = ingCollection.find();
+      const result = await imgs.toArray()
+      res.send(result)
     })
 
 

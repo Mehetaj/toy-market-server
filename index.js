@@ -37,34 +37,41 @@ async function run() {
     const toysCollection = client.db("toysCollection").collection("toys")
     // console.log(toysCollection);
 
-    app.get('/imgs' , (req ,res) => {
-        res.send(imgs)
+    app.get('/imgs', (req, res) => {
+      res.send(imgs)
     })
 
 
-    app.post('/sportstoys', async(req, res) => {
-      const toys = req.body;
-      const result = await toysCollection.insertOne(data)
-      res.send(result)
-    })
-
-    app.post('/sportstoys',async(req ,res) => {
-      const toy = req.body;
-            console.log('new user', toy);
-            const result = await toysCollection.insertOne(toy)
-            res.send(result)
-    })
-
-    app.get('/sportstoys',async(req, res) => {
+    app.get('/sportstoys', async (req, res) => {
       const q = req.body;
       const toys = toysCollection.find();
       const result = await toys.toArray();
       res.send(result)
     })
 
-    app.get('/sportstoys/:id',async(req, res) =>{
+
+    // app.get('/sportstoys', async (req, res) => {
+    //   const q = req.body;
+    //   const toys = toysCollection.find();
+    //   const result = await toys.toArray();
+    //   res.send(result)
+    // })
+
+    // app.post('/sportstoys', async (req, res) => {
+    //   const toys = req.body;
+    //   const result = await toysCollection.insertOne(data)
+    //   res.send(result)
+    // })
+
+    app.post('/sportstoys', async (req, res) => {
+      const toy = req.body;
+      const result = await toysCollection.insertOne(toy);
+      res.send(result)
+    })
+
+    app.get('/sportstoys/:id', async (req, res) => {
       const id = req.params.id;
-      const filter = {_id: new ObjectId(id)}
+      const filter = { _id: new ObjectId(id) }
       const toy = await toysCollection.findOne(filter)
       res.send(toy)
     })
@@ -86,11 +93,11 @@ run().catch(console.dir);
 
 
 
-app.get('/',(req ,res) => {
-    res.send('Toys Marketplace server is buying')
+app.get('/', (req, res) => {
+  res.send('Toys Marketplace server is buying')
 })
 
 
-app.listen(port , () => {
-    console.log('Server is running on port' , port);
+app.listen(port, () => {
+  console.log('Server is running on port', port);
 })

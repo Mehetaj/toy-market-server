@@ -42,10 +42,17 @@ async function run() {
     })
 
 
-    app.post('/sportstoy', async(req, res) => {
+    app.post('/sportstoys', async(req, res) => {
       const toys = req.body;
       const result = await toysCollection.insertOne(data)
       res.send(result)
+    })
+
+    app.post('/sportstoys',async(req ,res) => {
+      const toy = req.body;
+            console.log('new user', toy);
+            const result = await toysCollection.insertOne(toy)
+            res.send(result)
     })
 
     app.get('/sportstoys',async(req, res) => {
@@ -55,12 +62,11 @@ async function run() {
       res.send(result)
     })
 
-    app.get('/sportstoy/:id',async(req, res) =>{
-      const id =  req.params.id;
-      console.log(id);
-      const queury = {_id: new ObjectId(id)}
-      const result  = await toysCollection.findOne(queury)
-      res.send(result)
+    app.get('/sportstoys/:id',async(req, res) =>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      const toy = await toysCollection.findOne(filter)
+      res.send(toy)
     })
 
 

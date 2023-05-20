@@ -37,7 +37,7 @@ async function run() {
     const postedCollection = client.db("postedCollection").collection("posts")
     // console.log(toysCollection);
 
-    
+
 
     app.get('/posts', async (req, res) => {
       const toys = postedCollection.find();
@@ -62,6 +62,23 @@ async function run() {
     app.post('/posts', async (req, res) => {
       const toy = req.body;
       const result = await postedCollection.insertOne(toy);
+      res.send(result)
+    })
+
+
+    app.put('/posts/:id', async (req, res) => {
+      const id = req.params.id;
+      const toy = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateUser = {
+        $set: {
+          price: toy?.price,
+          quantity: toy?.quantity,
+          description: toy?.description
+        }
+      }
+      const result = await postedCollection.updateOne(filter,updateUser,option);
       res.send(result)
     })
 

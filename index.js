@@ -13,8 +13,6 @@ require("dotenv").config();
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
-// const uri = `mongodb+srv://toyMarketplace:axUVTCNxShzeYpzO@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4bdkenh.mongodb.net/?retryWrites=true&w=majority`;
 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -60,17 +58,28 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/posts/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await postedCollection.findOne(query);
+      res.send(result)
+    })
+
     app.post('/posts',async(req ,res) => {
       const toy = req.body;
       const result = await postedCollection.insertOne(toy);
       res.send(result)
     })
 
-    // app.post('/sportstoys', async (req, res) => {
-    //   const toy = req.body;
-    //   const result = await toysCollection.insertOne(toy);
-    //   res.send(result)
-    // })
+
+
+
+    app.delete('/posts/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await postedCollection.deleteOne(query);
+      res.send(result)
+    })
 
     app.get('/sportstoys/:id', async (req, res) => {
       const id = req.params.id;

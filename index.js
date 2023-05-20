@@ -72,23 +72,6 @@ async function run() {
     })
 
 
-    app.put('/posts/:id', async (req, res) => {
-      const id = req.params.id;
-      const post = req.body;
-      const filter = { _id: new ObjectId(id) };
-      const option = { upsert: true };
-      const updateToy = {
-        $set: {
-          price: post.price,
-          quantity: post.quantity,
-          description: post.description
-        }
-      };
-      const result = await postedCollection.updateOne(filter,updateToy,option);
-      res.send(result)
-    })
-
-
 
     app.delete('/posts/:id', async (req, res) => {
       const id = req.params.id;

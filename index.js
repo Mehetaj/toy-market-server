@@ -33,17 +33,11 @@ async function run() {
     // console.log(imgCollection);
 
 
-    const ingCollection = client.db("Images").collection("Image");
-    const tabsCollection = client.db("tabsCollection").collection("tabs");
     const toysCollection = client.db("toysCollection").collection("toys");
     const postedCollection = client.db("postedCollection").collection("posts")
     // console.log(toysCollection);
 
-    app.get('/imgs', async (req, res) => {
-      const imgs = ingCollection.find();
-      const result = await imgs.toArray()
-      res.send(result)
-    })
+    
 
     app.get('/posts', async (req, res) => {
       const toys = postedCollection.find();

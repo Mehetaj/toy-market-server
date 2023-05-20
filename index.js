@@ -34,19 +34,19 @@ async function run() {
 
 
     const ingCollection = client.db("Images").collection("Image");
-    const tabsCollection= client.db("tabsCollection").collection("tabs");
+    const tabsCollection = client.db("tabsCollection").collection("tabs");
     const toysCollection = client.db("toysCollection").collection("toys");
     const postedCollection = client.db("postedCollection").collection("posts")
     // console.log(toysCollection);
 
-    app.get('/imgs', async(req, res) => {
+    app.get('/imgs', async (req, res) => {
       const imgs = ingCollection.find();
       const result = await imgs.toArray()
       res.send(result)
     })
 
-    app.get('/posts',async(req, res) => {
-      const toys =  postedCollection.find();
+    app.get('/posts', async (req, res) => {
+      const toys = postedCollection.find();
       const result = await toys.toArray();
       res.send(result)
     })
@@ -58,25 +58,41 @@ async function run() {
       res.send(result)
     })
 
-    app.get('/posts/:id', async(req, res) => {
+    app.get('/posts/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id : new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await postedCollection.findOne(query);
       res.send(result)
     })
 
-    app.post('/posts',async(req ,res) => {
+    app.post('/posts', async (req, res) => {
       const toy = req.body;
       const result = await postedCollection.insertOne(toy);
       res.send(result)
     })
 
 
-
-
-    app.delete('/posts/:id', async(req, res) => {
+    app.put('/posts/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id : new ObjectId(id)};
+      const post = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateToy = {
+        $set: {
+          price: post.price,
+          quantity: post.quantity,
+          description: post.description
+        }
+      };
+      const result = await postedCollection.updateOne(filter,updateToy,option);
+      res.send(result)
+    })
+
+
+
+    app.delete('/posts/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
       const result = await postedCollection.deleteOne(query);
       res.send(result)
     })
